@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
@@ -82,5 +83,18 @@ class IssueController extends Controller
         $issue = Issue::find($id);
         $issue->delete();
         return redirect('issue');
+    }
+
+    public function search(Request $request)
+    {
+        $q = $request->input('q') ?? '';
+        $q = mb_convert_kana($q, 's');
+        $keywords = preg_split('/\s+/', $q);
+        $query = DB::table('issues');
+        foreach ($keywords as $k) {
+            $query->where('summary', 'like', sprintf('%%%s%%', $k));
+        }
+        $query->select('id', 'summary', 'description', 'status');
+        return view('issue.index', ['issues' => $query->simplePaginate(3)]);
     }
 }

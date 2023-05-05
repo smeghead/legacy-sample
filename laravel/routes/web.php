@@ -18,4 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('issue', IssueController::class);
+Route::resource('issue', IssueController::class)->where(['issue' => '[0-9]+']);
+Route::get('issue/search', [IssueController::class, 'search'])->name('issue.search');
