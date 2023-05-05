@@ -1,3 +1,6 @@
+<?php
+declare(strict_types=1);
+?>
 <h1>新規作成</h1>
 
 <form method="POST" action="{{ route('issue.store') }}">
