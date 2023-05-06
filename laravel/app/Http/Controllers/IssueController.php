@@ -16,7 +16,7 @@ class IssueController extends Controller
      */
     public function index()
     {
-        $issues = DB::table('issues')->select('id', 'summary', 'description', 'status')->simplePaginate(3);
+        $issues = DB::table('issues')->select('id', 'summary', 'deadline', 'description', 'status')->simplePaginate(3);
         return view('issue.index', ['issues' => $issues]);
     }
 
@@ -37,6 +37,7 @@ class IssueController extends Controller
 
         $issue->summary = $request->input('summary');
         $issue->description = $request->input('description');
+        $issue->deadline = $request->input('deadline');
         $issue->status = 'opened';
         $issue->save();
 
@@ -69,6 +70,7 @@ class IssueController extends Controller
         $issue = Issue::find($id);
         $issue->summary = $request->input('summary');
         $issue->description = $request->input('description');
+        $issue->deadline = $request->input('deadline');
         $issue->status = $request->input('status');
         $issue->save();
 
@@ -92,9 +94,9 @@ class IssueController extends Controller
         $keywords = preg_split('/\s+/', $q);
         $query = DB::table('issues');
         foreach ($keywords as $k) {
-            $query->where('summary', 'like', sprintf('%%%s%%', $k));
+            $query->where('summary', 'like', sprintf('%%%s%%', str_replace(['%', '_'], ['\%', '\_'], $k)));
         }
-        $query->select('id', 'summary', 'description', 'status');
+        $query->select('id', 'summary', 'deadline', 'description', 'status');
         return view('issue.index', ['issues' => $query->simplePaginate(3)]);
     }
 }

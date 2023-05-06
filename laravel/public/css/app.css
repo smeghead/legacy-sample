@@ -1,0 +1,9 @@
+tr.dead {
+    background-color: red;
+}
+tr.soon {
+    background-color: orange;
+}
+tr.today {
+    background-color: yellow;
+}
