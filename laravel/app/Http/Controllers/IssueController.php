@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreIssue;
 use App\Http\Requests\UpdateIssue;
 use App\Models\Issue;
+use Domain\Issue\IssueStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,11 +35,12 @@ class IssueController extends Controller
     public function store(StoreIssue $request)
     {
         $issue = new Issue();
+        $status = IssueStatus::create();
 
         $issue->summary = $request->input('summary');
         $issue->description = $request->input('description');
         $issue->deadline = $request->input('deadline');
-        $issue->status = 'opened';
+        $issue->status = $status->value();
         $issue->save();
 
         return redirect('issue');
@@ -59,7 +61,8 @@ class IssueController extends Controller
     public function edit(string $id)
     {
         $issue = Issue::find($id);
-        return view('issue/edit', ['issue' => $issue]);
+        $status = IssueStatus::createFromValue($issue->status);
+        return view('issue/edit', ['issue' => $issue, 'status' => $status]);
     }
 
     /**

@@ -1,9 +1,9 @@
 tr.dead {
-    background-color: red;
+    background-color: rgb(255, 0, 0, 0.5);
 }
 tr.soon {
-    background-color: orange;
+    background-color: rgb(255, 165, 0, 0.5);
 }
 tr.today {
-    background-color: yellow;
+    background-color: rgb(255, 255, 0, 0.5);
 }

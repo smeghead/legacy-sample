@@ -39,29 +39,11 @@ declare(strict_types=1);
     <div>
         状態
         <select name="status" class="form-control">
-            @switch ($issue->status)
-                @case('opened')
-                    @foreach (['opened' => '新規', 'working' => '作業中'] as $key => $value)
-                        <option value="{{$key}}" @selected(old('status') == $key)>
-                            {{ $value }}
-                        </option>
-                    @endforeach
-                    @break
-                @case('working')
-                    @foreach (['working' => '作業中', 'done' => '完了'] as $key => $value)
-                        <option value="{{$key}}" @selected(old('status') == $key)>
-                            {{ $value }}
-                        </option>
-                    @endforeach
-                    @breakd
-                @case('done')
-                    @foreach (['done' => '完了'] as $key => $value)
-                        <option value="{{$key}}" @selected(old('status') == $key)>
-                            {{ $value }}
-                        </option>
-                    @endforeach
-                    @break
-                @endswitch
+            @foreach ($status->getNextStatuses() as $next)
+                <option value="{{$next->value()}}" @selected(old('status') == $next->value())>
+                    {{ $next->name() }}
+                </option>
+            @endforeach
         </select>
         @error('status')
             {{ $message }}
