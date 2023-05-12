@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Domain\Issue\IssueStatus;
+
 function get_issue_class(?string $deadline): string
 {
     if (empty($deadline)) {
@@ -48,7 +50,7 @@ function get_issue_class(?string $deadline): string
         <td>{{$issue->id}}</td>
         <td>{{$issue->summary}}</td>
         <td>
-            {{ ['opened' => '新規', 'working' => '作業中', 'done' => '完了'][$issue->status] }}
+            {{ IssueStatus::createFromValue($issue->status)->name() }}
         </td>
         <td>{{$issue->deadline}}</td>
         <td>{{$issue->description}}</td>
