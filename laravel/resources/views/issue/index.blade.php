@@ -3,23 +3,8 @@
 declare(strict_types=1);
 
 use Domain\Issue\IssueStatus;
+use Domain\Issue\IssuePriority;
 
-function get_issue_class(?string $deadline): string
-{
-    if (empty($deadline)) {
-        return '';
-    }
-    $d = new \DateTimeImmutable($deadline);
-    $today = new \DateTimeImmutable('today');
-    if ($d == $today) {
-        return 'today';
-    } else if ($d < $today) {
-        return 'dead';
-    } else if ($d < $today->add(new \DateInterval('P3D'))) {
-        return 'soon';
-    }
-    return '';
-}
 ?>
 @extends('layout.common')
 @section('title', '一覧')
@@ -46,11 +31,15 @@ function get_issue_class(?string $deadline): string
         <th></th>
     </tr>
     @foreach($issues as $issue)
-    <tr class="{{ get_issue_class($issue->deadline) }}">
+    <?php
+        $status = IssueStatus::createFromValue($issue->status);
+        $priority = new IssuePriority(new \DateTimeImmutable('today'), $status, $issue->deadline);
+    ?>
+    <tr class="{{ $priority->value() }}">
         <td>{{$issue->id}}</td>
         <td>{{$issue->summary}}</td>
         <td>
-            {{ IssueStatus::createFromValue($issue->status)->name() }}
+            {{ $status->name() }}
         </td>
         <td>{{$issue->deadline}}</td>
         <td>{{$issue->description}}</td>

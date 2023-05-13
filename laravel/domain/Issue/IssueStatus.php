@@ -63,7 +63,7 @@ class IssueStatus
     }
 
     /**
-     * この状態の次に取り得る状態の一覧を返却します。
+     * この状態が次に取り得る状態の一覧を返却します。
      * @return self[] 現在のIssueStatusが、次に取り得るIssueStatusの一覧
      */
     public function getNextStatuses(): array
@@ -78,5 +78,14 @@ class IssueStatus
             default:
                 throw new \Exception('invalid value.');
         }
+    }
+
+    /**
+     * クローズ状態かどうかを返却します。
+     * @return bool クローズ状態かどうか
+     */
+    public function closed(): bool
+    {
+        return in_array($this->value, ['done']);
     }
 }
