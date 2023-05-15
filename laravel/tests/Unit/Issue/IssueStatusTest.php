@@ -12,6 +12,7 @@ class IssueStatusTest extends TestCase
         $sut = IssueStatus::create();
         $this->assertSame('opened', $sut->value());
         $this->assertSame('新規', $sut->name());
+        $this->assertSame(false, $sut->closed());
     }
 
     public function test_IssueStatusを値から作る_working(): void
@@ -19,6 +20,15 @@ class IssueStatusTest extends TestCase
         $sut = IssueStatus::createFromValue('working');
         $this->assertSame('working', $sut->value());
         $this->assertSame('作業中', $sut->name());
+        $this->assertSame(false, $sut->closed());
+    }
+
+    public function test_IssueStatusを値から作る_done(): void
+    {
+        $sut = IssueStatus::createFromValue('done');
+        $this->assertSame('done', $sut->value());
+        $this->assertSame('完了', $sut->name());
+        $this->assertSame(true, $sut->closed());
     }
 
     public function test_想定していない値が指定されたら例外が発生すること_other(): void
