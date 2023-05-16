@@ -4,6 +4,7 @@
 
  * [ドメインを純粋に保つ (レガシープロジェクトの改善活動について)](https://blog.starbug1.com/archives/2362)
  * [ドメインを純粋に保つ (レガシープロジェクトの改善活動について) (2)](https://blog.starbug1.com/archives/2409)
+ * [ドメインを純粋に保つ (レガシープロジェクトの改善活動について) (3) 完結編](https://blog.starbug1.com/archives/2426)
 
 ## Tags
 
