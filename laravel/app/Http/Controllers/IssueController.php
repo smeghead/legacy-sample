@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MySqlHelper;
+use App\Http\Requests\SearchIssue;
 use App\Http\Requests\StoreIssue;
 use App\Http\Requests\UpdateIssue;
 use App\Models\Issue;
 use Domain\Issue\IssueStatus;
+use Domain\Issue\List\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +20,8 @@ class IssueController extends Controller
      */
     public function index()
     {
-        $issues = DB::table('issues')->select('id', 'summary', 'deadline', 'description', 'status')->simplePaginate(3);
+        $settings = new Settings();
+        $issues = DB::table('issues')->select(...$settings->getListFields())->simplePaginate($settings->getCountParPage());
         return view('issue.index', ['issues' => $issues]);
     }
 
@@ -90,16 +94,14 @@ class IssueController extends Controller
         return redirect('issue');
     }
 
-    public function search(Request $request)
+    public function search(SearchIssue $request)
     {
-        $q = $request->input('q') ?? '';
-        $q = mb_convert_kana($q, 's');
-        $keywords = preg_split('/\s+/', $q);
         $query = DB::table('issues');
-        foreach ($keywords as $k) {
-            $query->where('summary', 'like', sprintf('%%%s%%', str_replace(['%', '_'], ['\%', '\_'], $k)));
+        foreach ($request->getKeywords() as $k) {
+            $query->where('summary', 'like', sprintf('%%%s%%', MySqlHelper::escapeLikeParameter($k)));
         }
-        $query->select('id', 'summary', 'deadline', 'description', 'status');
-        return view('issue.index', ['issues' => $query->simplePaginate(3)]);
+        $settings = new Settings();
+        $query->select(...$settings->getListFields());
+        return view('issue.index', ['issues' => $query->simplePaginate($settings->getCountParPage())]);
     }
 }
