@@ -11,6 +11,7 @@ use Domain\Issue\IssuePriority;
 
 @section('content')
 <h1>一覧表示</h1>
+<a class="btn btn-secondary" href="{{ route('issue.download_csv') }}">{{ __('CSVダウンロード') }}</a>
 <a class="btn btn-primary" href="{{ route('issue.create') }}">{{ __('新規作成') }}</a>
 <form method="GET" action="{{ route('issue.search') }}">
     @csrf

@@ -20,3 +20,4 @@ Route::get('/', function () {
 
 Route::resource('issue', IssueController::class)->whereNumber('issue');
 Route::get('issue/search', [IssueController::class, 'search'])->name('issue.search');
+Route::get('issue/download_csv', [IssueController::class, 'downloadCsv'])->name('issue.download_csv');

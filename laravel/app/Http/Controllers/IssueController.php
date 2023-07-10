@@ -104,4 +104,33 @@ class IssueController extends Controller
         $query->select(...$settings->getListFields());
         return view('issue.index', ['issues' => $query->simplePaginate($settings->getCountParPage())]);
     }
+
+    public function downloadCsv(Request $request)
+    {
+        return response()->streamDownload(function () {
+            $file = new \SplFileObject('php://output', 'w');
+
+            $file->fputcsv([
+                'ID',
+                '件名',
+                '説明',
+                '期限',
+                '状態',
+            ]);
+            $issues = Issue::orderBy('id', 'desc');
+
+            foreach ($issues->cursor() as $issue) {
+                $file->fputcsv([
+                    $issue->id,
+                    $issue->summary,
+                    $issue->description,
+                    $issue->deadline,
+                    $issue->status,
+                ]);
+            }
+        }, 'issues.csv', [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment;',
+        ]);
+    }
 }
