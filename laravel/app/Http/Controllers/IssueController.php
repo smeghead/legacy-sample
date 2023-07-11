@@ -107,6 +107,7 @@ class IssueController extends Controller
 
     public function downloadCsv(Request $request)
     {
+        $today = new \DateTimeImmutable('today');
         return response()->streamDownload(function () {
             $file = new \SplFileObject('php://output', 'w');
 
@@ -132,7 +133,7 @@ class IssueController extends Controller
                     $issue->updated_at,
                 ]);
             }
-        }, 'issues.csv', [
+        }, sprintf('issues-%s.csv', $today->format('YmdHis')), [
             'Content-type' => 'text/csv',
             'Content-Disposition' => 'attachment;',
         ]);
