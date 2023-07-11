@@ -116,6 +116,8 @@ class IssueController extends Controller
                 '説明',
                 '期限',
                 '状態',
+                '作成日時',
+                '更新日時',
             ]);
             $issues = Issue::orderBy('id', 'desc');
 
@@ -125,7 +127,9 @@ class IssueController extends Controller
                     $issue->summary,
                     $issue->description,
                     $issue->deadline,
-                    $issue->status,
+                    IssueStatus::createFromValue($issue->status)->name(),
+                    $issue->created_at,
+                    $issue->updated_at,
                 ]);
             }
         }, 'issues.csv', [
