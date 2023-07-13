@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\FormRequest;
 
 use App\Http\Requests\SearchIssue;
 use PHPUnit\Framework\TestCase;

@@ -9,6 +9,7 @@ use App\Http\Requests\StoreIssue;
 use App\Http\Requests\UpdateIssue;
 use App\Models\Issue;
 use Domain\Issue\IssueStatus;
+use Domain\Issue\List\CsvFormat;
 use Domain\Issue\List\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,32 +109,19 @@ class IssueController extends Controller
     public function downloadCsv(Request $request)
     {
         $now = new \DateTimeImmutable('now');
-        return response()->streamDownload(function () {
+        $csvFormat = new CsvFormat($now);
+
+        return response()->streamDownload(function () use ($csvFormat) {
             $file = new \SplFileObject('php://output', 'w');
 
-            $file->fputcsv([
-                'ID',
-                '件名',
-                '説明',
-                '期限',
-                '状態',
-                '作成日時',
-                '更新日時',
-            ]);
+            $file->fputcsv($csvFormat->getHeaders());
+
             $issues = Issue::orderBy('id', 'desc');
 
             foreach ($issues->cursor() as $issue) {
-                $file->fputcsv([
-                    $issue->id,
-                    $issue->summary,
-                    $issue->description,
-                    $issue->deadline,
-                    IssueStatus::createFromValue($issue->status)->name(),
-                    $issue->created_at,
-                    $issue->updated_at,
-                ]);
+                $file->fputcsv($csvFormat->convertRow($issue->toArray()));
             }
-        }, sprintf('issues-%s.csv', $now->format('YmdHis')), [
+        }, $csvFormat->getDownloadFilename(), [
             'Content-type' => 'text/csv',
             'Content-Disposition' => 'attachment;',
         ]);
