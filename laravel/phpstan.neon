@@ -1,0 +1,7 @@
+parameters:
+  paths:
+    - app
+    - domain
+  excludePaths:
+    - app/config*
+  level: 6

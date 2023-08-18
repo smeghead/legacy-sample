@@ -7,7 +7,7 @@ namespace Domain\Issue;
 /**
  * Issueの優先度
  */
-class IssuePriority
+final class IssuePriority
 {
     private string $value = '';
 

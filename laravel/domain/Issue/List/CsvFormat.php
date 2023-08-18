@@ -9,7 +9,7 @@ use Domain\Issue\IssueStatus;
 /**
  * 課題のダウンロード機能のCSV形式
  */
-class CsvFormat {
+final class CsvFormat {
     private \DateTimeImmutable $now;
 
     public function __construct(\DateTimeImmutable $now)
@@ -27,7 +27,7 @@ class CsvFormat {
 
     /**
      * 課題の1レコードの連想配列をCSVの1行のデータに変換します。
-     * @param array $issue 課題の1レコードの連想配列
+     * @param array<string, string|int|bool|null> $issue 課題の1レコードの連想配列
      * @return string[] CSVの1行のデータ
      */
     public function convertRow(array $issue): array

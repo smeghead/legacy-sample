@@ -15,3 +15,35 @@
  * v1.2.0 ドメインを純粋に保つ (レガシープロジェクトの改善活動について) (2)での改善結果です。
  * v1.3.0 ドメインを純粋に保つ (レガシープロジェクトの改善活動について) (3) 完結編での改善結果です。
  * v2.1.0 ドメインを純粋に保つ (レガシープロジェクトの改善活動について) (5) CSVダウンロード機能での改善結果です。
+
+## Develop Environment
+
+```
+$ git clone git@github.com:smeghead/legacy-sample.git
+$ docker compose up -d
+$ docker compose exec app bash
+# cd laravel
+# composer install
+```
+
+データベースマイグレーション
+```
+# cp .env.example .env
+# php artisan migrate:install
+# php artisan migrate
+```
+
+ログファイルの権限設定
+```
+# chmod 666 storage/logs/laravel.log
+# php artisan key:generate
+```
+
+APP_KEY生成
+```
+# php artisan key:generate
+```
+
+以下のURLにアクセスすると、課題一覧が表示されます。
+
+http://localhost:8000/issue

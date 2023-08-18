@@ -18,6 +18,7 @@ class IssueController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -28,6 +29,7 @@ class IssueController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -36,6 +38,7 @@ class IssueController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(StoreIssue $request)
     {
@@ -53,6 +56,7 @@ class IssueController extends Controller
 
     /**
      * Display the specified resource.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show(string $id)
     {
@@ -62,6 +66,7 @@ class IssueController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(string $id)
     {
@@ -72,6 +77,7 @@ class IssueController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(UpdateIssue $request, string $id)
     {
@@ -87,6 +93,7 @@ class IssueController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy(string $id)
     {
@@ -95,6 +102,9 @@ class IssueController extends Controller
         return redirect('issue');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function search(SearchIssue $request)
     {
         $query = DB::table('issues');
@@ -106,6 +116,9 @@ class IssueController extends Controller
         return view('issue.index', ['issues' => $query->simplePaginate($settings->getCountParPage())]);
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
     public function downloadCsv(Request $request)
     {
         $now = new \DateTimeImmutable('now');

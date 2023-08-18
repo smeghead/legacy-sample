@@ -7,7 +7,7 @@ namespace Domain\Issue;
 /**
  * Issueの状態
  */
-class IssueStatus
+final class IssueStatus
 {
     const NAMES = [
         'opened' => '新規',

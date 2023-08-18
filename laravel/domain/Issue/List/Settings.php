@@ -7,7 +7,7 @@ namespace Domain\Issue\List;
 /**
  * 課題一覧の設定
  */
-class Settings {
+final class Settings {
     public function __construct()
     {
     }
